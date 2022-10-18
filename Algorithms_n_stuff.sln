@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Algorithms_n_stuff", "Algorithms_n_stuff\Algorithms_n_stuff.csproj", "{5AD0FD06-1076-420E-913A-D94C64079B40}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinkedList_Tests", "LinkedList_Tests\LinkedList_Tests.csproj", "{765E1AE0-9592-42FC-82CD-292FBC65C333}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stacks_n_stuff", "Stacks_n_stuff\Stacks_n_stuff.csproj", "{528FDC81-2FDE-4E8D-9D03-41447B78FCE2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryTree", "ConsoleApp1\BinaryTree.csproj", "{82D70130-359F-4870-A3A6-4E0162FB0786}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryTree_Tests", "BinaryTree_Tests\BinaryTree_Tests.csproj", "{232C4F24-D4B1-44F2-A304-656BE37D4200}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stacks_n_stuff_Tests", "Stacks_n_stuff_Tests\Stacks_n_stuff_Tests.csproj", "{138F5968-9BD1-4547-9E4D-932C38A90E65}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "B-Tree", "B-Tree\B-Tree.csproj", "{A9169135-69D6-437B-8089-CA68D36D6563}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5AD0FD06-1076-420E-913A-D94C64079B40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AD0FD06-1076-420E-913A-D94C64079B40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AD0FD06-1076-420E-913A-D94C64079B40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AD0FD06-1076-420E-913A-D94C64079B40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{765E1AE0-9592-42FC-82CD-292FBC65C333}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{765E1AE0-9592-42FC-82CD-292FBC65C333}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{765E1AE0-9592-42FC-82CD-292FBC65C333}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{765E1AE0-9592-42FC-82CD-292FBC65C333}.Release|Any CPU.Build.0 = Release|Any CPU
+		{528FDC81-2FDE-4E8D-9D03-41447B78FCE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{528FDC81-2FDE-4E8D-9D03-41447B78FCE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{528FDC81-2FDE-4E8D-9D03-41447B78FCE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{528FDC81-2FDE-4E8D-9D03-41447B78FCE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82D70130-359F-4870-A3A6-4E0162FB0786}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82D70130-359F-4870-A3A6-4E0162FB0786}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82D70130-359F-4870-A3A6-4E0162FB0786}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82D70130-359F-4870-A3A6-4E0162FB0786}.Release|Any CPU.Build.0 = Release|Any CPU
+		{232C4F24-D4B1-44F2-A304-656BE37D4200}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{232C4F24-D4B1-44F2-A304-656BE37D4200}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{232C4F24-D4B1-44F2-A304-656BE37D4200}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{232C4F24-D4B1-44F2-A304-656BE37D4200}.Release|Any CPU.Build.0 = Release|Any CPU
+		{138F5968-9BD1-4547-9E4D-932C38A90E65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{138F5968-9BD1-4547-9E4D-932C38A90E65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{138F5968-9BD1-4547-9E4D-932C38A90E65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{138F5968-9BD1-4547-9E4D-932C38A90E65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9169135-69D6-437B-8089-CA68D36D6563}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9169135-69D6-437B-8089-CA68D36D6563}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9169135-69D6-437B-8089-CA68D36D6563}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9169135-69D6-437B-8089-CA68D36D6563}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {372693A4-A582-4481-93BD-68B8114802C0}
+	EndGlobalSection
+EndGlobal
