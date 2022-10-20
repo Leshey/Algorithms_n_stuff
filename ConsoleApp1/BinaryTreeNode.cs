@@ -13,21 +13,29 @@
         BinaryTree.AddNewValue(43);
         BinaryTree.AddNewValue(55);
         BinaryTree.AddNewValue(75);
-        BinaryTree.AddNewValue(37);
         BinaryTree.AddNewValue(27);
-        BinaryTree.RemoveValue(45);
+
+        BinaryTree.RemoveValue(37);
+        BinaryTree.RemoveValue(43);
+        BinaryTree.RemoveValue(40);
+        BinaryTree.RemoveValue(75);
+
+        BinaryTree.IsValueInTree(37);
+        BinaryTree.IsValueInTree(43);
+        BinaryTree.IsValueInTree(40);
+        BinaryTree.IsValueInTree(75);
 
 
-        BinaryTree.ShowHeight();
-
-        //BinaryTree.PrintVerySpecificTree();
-
-
-        //var one = 1;
-        //var two = 2;
-        
-        //Console.WriteLine(one.CompareTo(two));
-        //Console.WriteLine(two.CompareTo(one));
+        Console.WriteLine();
+        Console.WriteLine(BinaryTree._head.Value);
+        Console.WriteLine();
+        Console.WriteLine(BinaryTree._head.Left.Value);
+        Console.WriteLine(BinaryTree._head.Left.Left.Value);
+        Console.WriteLine(BinaryTree._head.Left.Right.Value);
+        Console.WriteLine();
+        Console.WriteLine(BinaryTree._head.Right.Value);
+        Console.WriteLine(BinaryTree._head.Right.Left.Value);
+        Console.WriteLine(BinaryTree._head.Right.Right.Value);
     }
 
 }
@@ -86,27 +94,42 @@ public class BinaryTreeNode<TValue>
             if (order < 0 && Left != null)
             {
                 Left = Left.RemoveValue(valueToRemove);
+                return Balance();
             }
             else if (order > 0 && Right != null)
             {
                 Right = Right.RemoveValue(valueToRemove);
+                return Balance();
             }
             else
             {
-               if (Left != null)
+                var tempLeft = Left;
+                var tempRight = Right;
+                
+                if (Left != null)
                 {
-                    if(Left.Right != null)
+                    if (Left.Right != null)
                     {
+                        var headCandidate = Left;
                         var tempNode = Left.Right;
-                        while(tempNode.Right != null)
+
+                        while (true)
                         {
-                            tempNode = tempNode.Right;
+                            if (tempNode.Right != null)
+                            {
+                                headCandidate = tempNode;
+                                tempNode = tempNode.Right;
+                            }
+                            else
+                            {
+                                break;
+                            }
                         }
-                        return tempNode;
-                    }
-                    else
-                    {
-                        return Left;
+                        headCandidate.Right = null;
+                        headCandidate = tempNode;
+                        headCandidate.Left = tempLeft;
+                        headCandidate.Right = tempRight;
+                        return headCandidate;
                     }
                 }
                 else if (Right != null)
@@ -118,7 +141,8 @@ public class BinaryTreeNode<TValue>
                     return null;
                 }
             }
-        } return this;
+        }
+        return this;
     }
 
     public bool IsValueInTree(TValue value)

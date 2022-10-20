@@ -2,11 +2,10 @@
 public class BinaryTree<TValue>
     where TValue : IComparable<TValue>
 {
-    private BinaryTreeNode<TValue> _head;
+    public BinaryTreeNode<TValue> _head;
 
 
-    public void AddNewValue
-        (TValue newValue)
+    public void AddNewValue(TValue newValue)
     {
         if (_head == null)
         {
@@ -18,9 +17,19 @@ public class BinaryTree<TValue>
         }
     }
 
+    public void RemoveValue(TValue newValue)
+    {
+        _head = _head.RemoveValue(newValue);
+    }
+
     public void ShowHeight()
     {
         Console.WriteLine(_head.GetHeight());
+    }
+
+    public void IsValueInTree(TValue value)
+    {
+        Console.WriteLine($"{value} is in: {_head.IsValueInTree(value)}");
     }
 
     public void PrintVerySpecificTree()
