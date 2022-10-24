@@ -49,8 +49,8 @@ public class BinaryTreeNode<TValue>
     }
 
     public TValue Value { get; }
-    public BinaryTreeNode<TValue>? Left { get; set; }
-    public BinaryTreeNode<TValue>? Right { get; set; }
+    public BinaryTreeNode<TValue>? Left { get; private set; }
+    public BinaryTreeNode<TValue>? Right { get; private set; }
 
     public BinaryTreeNode<TValue> AddNewValue(TValue newValue)
     {

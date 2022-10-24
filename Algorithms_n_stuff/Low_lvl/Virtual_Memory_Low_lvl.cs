@@ -2,54 +2,54 @@
 
 public class Program
 {
-    //public static void Main()
-    //{
-    //    var virtualMemory = new VirtualMemory();
-    //    var arrayPoint = virtualMemory.Alloc(5);
+    public static void Main()
+    {
+        var virtualMemory = new VirtualMemory();
+        var arrayPoint = virtualMemory.Alloc(5);
 
-    //    for (int i = 0; i < 5; i++)
-    //    {
-    //        virtualMemory.SetData(arrayPoint, i, i);
-    //    }
+        for (int i = 0; i < 5; i++)
+        {
+            virtualMemory.SetData(arrayPoint, i, i);
+        }
 
-    //    for (int i = 0; i < 5; i++)
-    //    {
-    //        Console.WriteLine(virtualMemory.GetData(arrayPoint, i));
-    //    }
+        for (int i = 0; i < 5; i++)
+        {
+            Console.WriteLine(virtualMemory.GetData(arrayPoint, i));
+        }
 
-    //    virtualMemory.Free(arrayPoint);
+        virtualMemory.Free(arrayPoint);
 
-    //    Console.WriteLine(virtualMemory.Alloc(34));
-    //    Console.WriteLine(" ");
+        Console.WriteLine(virtualMemory.Alloc(34));
+        Console.WriteLine(" ");
 
-    //    for (int i = 0; i < 128; i++)
-    //    {
-    //        Console.WriteLine(virtualMemory._data[i]);
-    //    }
+        for (int i = 0; i < 128; i++)
+        {
+            Console.WriteLine(virtualMemory._data[i]);
+        }
 
-    //    var virtualMemory = new VirtualMemory();
+        virtualMemory = new VirtualMemory();
 
-    //    var head = CreateNewLinkedList(virtualMemory, 11111);
+        var head = CreateNewLinkedList(virtualMemory, 11111);
 
-    //    AddNewNodeInTail(virtualMemory, head, 22222);
-    //    virtualMemory.Alloc(5);
-    //    AddNewNodeInTail(virtualMemory, head, 33333);
-    //    virtualMemory.Alloc(10);
-    //    virtualMemory.Alloc(5);
-    //    AddNewNodeInTail(virtualMemory, head, 44444);
-    //    AddNewNodeInTail(virtualMemory, head, 55555);
-    //    virtualMemory.Alloc(5);
-    //    AddNewNodeInTail(virtualMemory, head, 66666);
+        AddNewNodeInTail(virtualMemory, head, 22222);
+        virtualMemory.Alloc(5);
+        AddNewNodeInTail(virtualMemory, head, 33333);
+        virtualMemory.Alloc(10);
+        virtualMemory.Alloc(5);
+        AddNewNodeInTail(virtualMemory, head, 44444);
+        AddNewNodeInTail(virtualMemory, head, 55555);
+        virtualMemory.Alloc(5);
+        AddNewNodeInTail(virtualMemory, head, 66666);
 
 
-    //    head = DeleteNodeByIndex(virtualMemory, head, 5);
+        head = DeleteNodeByIndex(virtualMemory, head, 5);
 
-    //    for (int i = 0; i < virtualMemory._data.Length; i++)
-    //    {
-    //        Console.WriteLine($"{i}|{virtualMemory._data[i]}");
-    //    }
+        for (int i = 0; i < virtualMemory._data.Length; i++)
+        {
+            Console.WriteLine($"{i}|{virtualMemory._data[i]}");
+        }
 
-    //}
+    }
 
     // -3 == null
     public static int CreateNewLinkedList(VirtualMemory virtualMemory, int value)

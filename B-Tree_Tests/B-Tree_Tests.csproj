@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>B_Tree_Tests</RootNamespace>
     <Nullable>enable</Nullable>
 
     <IsPackable>false</IsPackable>
@@ -21,7 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LinkedList\LinkedList.csproj" />
+    <ProjectReference Include="..\B-Tree\B-Tree.csproj" />
+    <ProjectReference Include="..\BinaryTree_Tests\BinaryTree_Tests.csproj" />
+    <ProjectReference Include="..\ConsoleApp1\BinaryTree.csproj" />
   </ItemGroup>
 
 </Project>

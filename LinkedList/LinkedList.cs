@@ -1,4 +1,11 @@
-﻿
+﻿public class Program
+{
+    public static void Main()
+    {
+
+    }
+}
+
 public class LinkedList
 {
     public LinkedListElement Head { get; set; }
@@ -66,7 +73,7 @@ public class LinkedList
             {
                 previousElement.Next = currentElement.Next; // check if possible without tempElement with var
             }
-            
+
             if (currentElement.Next != null)
             {
                 currentElement = currentElement.Next;
@@ -77,7 +84,7 @@ public class LinkedList
             }
         }
 
-        
+
 
     }
 
