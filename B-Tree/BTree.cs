@@ -18,7 +18,7 @@ public class BTree
 
     //public void AddNewValue(int newValue)
     //{
-    //    if(_head == null)
+    //    if (_head == null)
     //    {
     //        _head = new BTreeNode(newValue, _maxNumOfCells);
     //    }

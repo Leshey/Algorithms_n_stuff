@@ -16,11 +16,11 @@
     public BTreeNode Left { get; private set; }
     public BTreeNode Right { get; private set; }
 
-    public BTreeCell InsertValue(int newValue)
+    public BTreeCell InsertCell(int newValue)
     {
-        var currentHead = this;
+        var currentCell = GetNodeToInsert(newValue); // pray it works (NEED TESTING!)
 
-        if (newValue < Value)
+        if (newValue < currentCell.Value)
         {
             return new BTreeCell(newValue, this);
         }
@@ -28,14 +28,22 @@
         {
             for (int i = 0; i < int.MaxValue; i++)
             {
-                if (currentHead.Next != null)
+                if (currentCell.Next != null)
                 {
-                    currentHead = currentHead.Next;
+                    if(currentCell.Next.Value > newValue)
+                    {
+                        var tempCell = currentCell.Next;
+                        currentCell.Next = new BTreeCell(newValue, tempCell);
+                        break;
+                    }
+                    else
+                    {
+                        currentCell = currentCell.Next;
+                    }                    
                 }
                 else
                 {
-                    currentHead.Next = new BTreeCell(newValue, this);
-                    currentHead.Next.Value = newValue;
+                    currentCell.Next = new BTreeCell(newValue);
                     break;
                 }
             }
@@ -43,21 +51,57 @@
         return this;
     }
 
-    public int GetCellNum()
+    public BTreeCell GetNodeToInsert(int value)
     {
-        if (Next == null)
+        var currentCell = this;
+        
+        for(int i = 0; i < int.MaxValue; i++)
         {
-            return 1;
+            if(currentCell.Left != null)
+            {
+                currentCell = GetNeededLowerNode(value).HeadOfList; // why...
+            }
+            else
+            {
+                return currentCell;
+            }
         }
-        else
+        return this;
+    }
+
+    public BTreeNode GetNeededLowerNode(int value) //method to find in LL proper link to lower Node (but why it returns Node???)
+    {
+        var currentCell = this;
+
+        for(int i = 0; i < int.MaxValue; i++)
         {
-            return 1 + Next.GetCellNum();
+            if (value < currentCell.Value)
+            {
+                return currentCell.Left;
+            }
+            else if (currentCell.Next == null) //if .Next == null && value >= .Value
+            {
+                return currentCell.Right;
+            }
+            else if (currentCell.Next != null)
+            {
+                if(value >= currentCell.Next.Value)
+                {
+                    currentCell = currentCell.Next;
+                    continue;
+                }
+                else
+                {
+                    return currentCell.Right;
+                } 
+            }
         }
+        return null; // ??? Don't know how to solve this without such code
     }
 
     public int GetMedianNum(int newValue, int maxNumOfCell)
     {
-        int[] numArray = new int[maxNumOfCell + 1];
+        int[] numArray = new int[maxNumOfCell + 1]; //Do not forget to remove +1 if logic will change to (maxNumOfCell + 1) Cells in Node for easier median finding.
         bool isNewValueInArray = false;
         var currentHead = this;
         
@@ -103,7 +147,37 @@
             candidate1 = candidate1 > newValue ? candidate1 - newValue : newValue - candidate1;
             candidate2 = candidate2 > newValue ? candidate2 - newValue : newValue - candidate2;
 
-            return candidate1 < candidate2 ? indexOfCandidate1 : indexOfCandidate2;
+             return candidate1 < candidate2 ? indexOfCandidate1 : indexOfCandidate2;
         }
+    }
+
+    public int GetCellCount()
+    {
+        if (Next == null)
+        {
+            return 1;
+        }
+        else
+        {
+            return 1 + Next.GetCellCount();
+        }
+    }
+
+    public BTreeCell GetCellByIndex(int index)
+    {
+        var currentCell = this;
+
+        for (int i = 0; i < index; i++)
+        {
+            if (currentCell.Next != null)
+            {
+                currentCell = currentCell.Next;
+            }
+            else
+            {
+                throw new IndexOutOfRangeException();
+            }
+        }
+        return currentCell;
     }
 }
