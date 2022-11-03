@@ -6,26 +6,113 @@ public class BTreeNode
         MaxNumOfCells = numOfCells;
         HeadOfList = new BTreeCell(value);
     }
-    
+
+    public BTreeNode(BTreeCell cell, int numOfCells) : this(cell, numOfCells, null)
+    {
+        MaxNumOfCells = numOfCells;
+        HeadOfList = cell;
+    }
+
+    public BTreeNode(BTreeCell cell, int numOfCells, BTreeNode? parentNode)
+    {
+        MaxNumOfCells = numOfCells;
+        HeadOfList = cell;
+        ParentNode = parentNode;
+    }
+
     public BTreeCell HeadOfList { get; private set; }
+    public BTreeNode? ParentNode { get; private set; }
     public int MaxNumOfCells { get; }
     public int NumOfCells => HeadOfList.GetCellCount();
 
-    //public BTreeCell AddNewValue(int newValue)
-    //{
-    //    if (HeadOfList.Left == null)
-    //    {
-    //        if (NumOfCells < MaxNumOfCells)
-    //        {
-    //            return HeadOfList = HeadOfList.InsertValue(newValue);
-    //        }
-    //        else
-    //        {
 
-    //        }
-    //    }
 
-    //}
+    public BTreeNode AddNewValue(int newValue)
+    {
+        var currentNode = this;
+        var currentHeadNode = currentNode;
+        BTreeCell medianCell;
+
+        if (currentNode.HeadOfList.Left != null)
+        {
+            currentNode = currentNode.GoToLowerNode(newValue);
+        }        
+
+        while(true)
+        {
+            if (currentNode.NumOfCells < currentNode.MaxNumOfCells)
+            {
+                currentNode.HeadOfList = currentNode.HeadOfList.AddNewValue(newValue);
+                return currentHeadNode;
+            }
+            else
+            {
+                currentNode.HeadOfList = currentNode.HeadOfList.AddNewValue(newValue);
+                medianCell = currentNode.HeadOfList.GetMedianCell(currentNode, newValue, currentNode.MaxNumOfCells);
+
+                if (currentNode.ParentNode == null)
+                {
+                    currentNode.ParentNode = new BTreeNode(medianCell, currentNode.MaxNumOfCells);
+                    SetParentNode(medianCell.Right, currentNode.ParentNode);
+                    return currentNode.ParentNode;
+                }
+                else
+                {
+                    currentNode = currentNode.ParentNode;
+
+                    continue;
+                }
+            }
+        }
+    }
+
+    public BTreeNode GoToLowerNode(int newValue)
+    {
+        var currentNode = this;
+
+        while (true)
+        {
+            if (currentNode.HeadOfList.Left != null)
+            {
+                currentNode = currentNode.GetLinkToLowerNode(newValue);
+            }
+            else
+            {
+                return currentNode;
+            }
+        }
+    }
+
+    public BTreeNode GetLinkToLowerNode(int newValue) //method to find in LL proper link to lower Node (but why it returns Node???) // Better make private
+    {
+        var currentCell = this.HeadOfList;
+
+        while (true)
+        {
+            if (newValue < currentCell.Value)
+            {
+                return currentCell.Left;
+            }
+            else if (currentCell.Next == null) //if .Next == null && value >= .Value
+            {
+                return currentCell.Right;
+            }
+            else if (currentCell.Next != null)
+            {
+                if (newValue >= currentCell.Next.Value)
+                {
+                    currentCell = currentCell.Next;
+                    continue;
+                }
+                else
+                {
+                    return currentCell.Right;
+                }
+            }
+        }
+    }
+
+
 
     public int GetHeight(BTreeCell head)
     {
@@ -35,11 +122,17 @@ public class BTreeNode
         if(head.Left != null)
         {
             height =+ head.Left.GetHeight(currentHead);
+            return height;
         }
         else
         {
             return height;
         }
-        return height; // is there better way to write it?
+         // is there better way to write it?
+    }
+
+    private void SetParentNode(BTreeNode childNode, BTreeNode parentNode)
+    {
+        childNode.ParentNode = parentNode;
     }
 }

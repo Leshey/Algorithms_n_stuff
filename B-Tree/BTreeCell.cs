@@ -2,7 +2,6 @@
 {
     public BTreeCell(int value) : this(value, null)
     {
-        Value = value;
     }
 
     public BTreeCell(int value, BTreeCell? nextCell)
@@ -16,90 +15,150 @@
     public BTreeNode Left { get; private set; }
     public BTreeNode Right { get; private set; }
 
+    
+    public BTreeCell AddNewValue(int newValue)
+    {
+        return this.InsertCell(newValue);
+    }
+    
     public BTreeCell InsertCell(int newValue)
     {
-        var currentCell = GetNodeToInsert(newValue); // pray it works (NEED TESTING!)
+        var cell = new BTreeCell(newValue);
+        return InsertCell(cell);
+    }
 
-        if (newValue < currentCell.Value)
+    public BTreeCell InsertCell(BTreeCell newCell)
+    {
+        var currentCell = this;  //GetNodeToInsert(newValue); // pray it works (NEED TESTING!)
+
+        if (newCell.Value < currentCell.Value)
         {
-            return new BTreeCell(newValue, this);
+            newCell.Next = currentCell;
+            return newCell;
         }
         else
         {
-            for (int i = 0; i < int.MaxValue; i++)
+            while(true)
             {
                 if (currentCell.Next != null)
                 {
-                    if(currentCell.Next.Value > newValue)
+                    if(newCell.Value < currentCell.Next.Value)
                     {
                         var tempCell = currentCell.Next;
-                        currentCell.Next = new BTreeCell(newValue, tempCell);
+                        currentCell.Next = newCell;
+                        newCell.Next = tempCell;
                         break;
                     }
                     else
                     {
                         currentCell = currentCell.Next;
+                        continue;
                     }                    
                 }
                 else
                 {
-                    currentCell.Next = new BTreeCell(newValue);
+                    currentCell.Next = newCell;
                     break;
                 }
             }
+
+            if (newCell.Left != null && newCell.Right != null)
+            {
+                ShareLinksWithNeighborCells(newCell);
+            }
         }
-        return this;
+        return this; 
     }
 
-    public BTreeCell GetNodeToInsert(int value)
+    public void ShareLinksWithNeighborCells(BTreeCell newCell)
     {
-        var currentCell = this;
-        
-        for(int i = 0; i < int.MaxValue; i++)
+        var newCellIndex = GetCellIndex(newCell);
+        var cellCount = GetCellCount();
+        BTreeCell leftCell;
+        BTreeCell rightCell;
+                
+        if (newCellIndex == 0 && newCell.Next != null)
         {
-            if(currentCell.Left != null)
-            {
-                currentCell = GetNeededLowerNode(value).HeadOfList; // why...
-            }
-            else
-            {
-                return currentCell;
-            }
+            rightCell = newCell.Next;
+            rightCell.Left = newCell.Right;
         }
-        return this;
+        else if (newCellIndex == cellCount - 1)
+        {
+            leftCell = GetCellByIndex(newCellIndex - 1);
+            leftCell.Right = newCell.Left;
+        }
+        else
+        {
+            leftCell = GetCellByIndex(newCellIndex - 1);
+            rightCell = newCell.Next;
+            
+            leftCell.Right = newCell.Left;
+            rightCell.Left = newCell.Right;
+        }
     }
 
-    public BTreeNode GetNeededLowerNode(int value) //method to find in LL proper link to lower Node (but why it returns Node???)
+    public BTreeCell GetMedianCell(BTreeNode node, int newValue, int maxNumOfCell)
     {
-        var currentCell = this;
+        var currentHead = node.HeadOfList;
 
-        for(int i = 0; i < int.MaxValue; i++)
+        if (currentHead.GetCellCount() >= maxNumOfCell + 1) //Maybe unnecessary guard, since it's Node responsibility but eeeh 
         {
-            if (value < currentCell.Value)
-            {
-                return currentCell.Left;
-            }
-            else if (currentCell.Next == null) //if .Next == null && value >= .Value
-            {
-                return currentCell.Right;
-            }
-            else if (currentCell.Next != null)
-            {
-                if(value >= currentCell.Next.Value)
-                {
-                    currentCell = currentCell.Next;
-                    continue;
-                }
-                else
-                {
-                    return currentCell.Right;
-                } 
-            }
+            var medianIndex = GetMedianIndex(newValue, maxNumOfCell);
+            var medianCell = GetCellByIndex(medianIndex);
+            medianCell.Left = node;
+            medianCell.Right = new BTreeNode(GetCellByIndex(medianIndex + 1), maxNumOfCell);
+            RemoveOldLinksInMedianCell(medianIndex);
+            
+            return medianCell;
         }
-        return null; // ??? Don't know how to solve this without such code
+        else
+        {
+            return null;
+        }
+
     }
 
-    public int GetMedianNum(int newValue, int maxNumOfCell)
+    public int GetMedianIndex(int newValue, int maxNumOfCell)
+    {
+        int[] numArray = new int[maxNumOfCell + 1];
+        var currentHead = this;
+
+        for (int i = 0; i < numArray.Length; i++)
+        {
+            var valueToArray = currentHead.Value;
+            numArray[i] = valueToArray;
+            currentHead = currentHead.Next;
+        }
+
+        var oddOrEven = numArray.Length % 2;
+        if (oddOrEven == 0)
+        {
+            var medianIndex = (numArray.Length / 2) - 1;
+            return numArray[GetClosestMedian(medianIndex)];
+        }
+        else
+        {
+            var medianIndex = (numArray.Length / 2) - 1;
+            return medianIndex + 1;
+        }
+
+        int GetClosestMedian(int medianIndexArg)
+        {
+            var candidate1 = numArray[medianIndexArg];
+            var indexOfCandidate1 = medianIndexArg;
+            var candidate2 = numArray[medianIndexArg + 1];
+            var indexOfCandidate2 = medianIndexArg + 1;
+
+            candidate1 = candidate1 > newValue ? candidate1 - newValue : newValue - candidate1;
+            candidate2 = candidate2 > newValue ? candidate2 - newValue : newValue - candidate2;
+
+            return candidate1 < candidate2 ? indexOfCandidate1 : indexOfCandidate2;
+        }
+
+    }
+
+    [Obsolete("Legacy logic, remove asap")] // Obsolete - When call obsolete method, shows msg that this is bad idea 
+    public int GetMedianIndexButOld(int newValue, int maxNumOfCell) 
     {
         int[] numArray = new int[maxNumOfCell + 1]; //Do not forget to remove +1 if logic will change to (maxNumOfCell + 1) Cells in Node for easier median finding.
         bool isNewValueInArray = false;
@@ -127,12 +186,12 @@
         if(oddOrEven == 0)
         {
             var medianIndex = (numArray.Length / 2) - 1;
-            return numArray[GetClosestMedian(medianIndex)];
+            return GetClosestMedian(medianIndex);
         }
         else
         {
             var medianIndex = (numArray.Length / 2) - 1;
-            return numArray[medianIndex + 1];
+            return medianIndex + 1;
         }
         
         //local method cuz why not
@@ -151,6 +210,22 @@
         }
     }
 
+    public void RemoveOldLinksInMedianCell(int medianIndex)
+    {
+        if(medianIndex > 0)
+        {
+            var medianCell = GetCellByIndex(medianIndex);
+            medianCell.Next = null;
+            var tempCell = GetCellByIndex(medianIndex - 1);
+            tempCell.Next = null;
+            
+        }
+        else
+        {
+            throw new ArgumentOutOfRangeException();
+        }
+    }
+    
     public int GetCellCount()
     {
         if (Next == null)
@@ -179,5 +254,28 @@
             }
         }
         return currentCell;
+    }
+
+    public int GetCellIndex(BTreeCell cell)
+    {
+        var currentCell = this;
+        var index = 0;
+
+        while (true)
+        {
+            if(cell.Value == currentCell.Value)
+            {
+                return index;
+            }
+            else if(cell.Next != null)
+            {
+                currentCell = currentCell.Next;
+                index += 1;
+            }
+            else
+            {
+                throw new ArgumentException($"Cannot find cell with '{cell.Value}' value in node");
+            }
+        }
     }
 }

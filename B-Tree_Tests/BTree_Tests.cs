@@ -2,24 +2,8 @@ using Xunit;
 
 namespace B_Tree_Tests;
 
-public class BTreeCell_Tests
+public class BTree_Tests
 {
-    [Fact]
-    public void GetMedianNumTest()
-    {
-        var cell = new BTreeCell(2);
-        cell.Next = new BTreeCell(3);
-        cell.Next.Next = new BTreeCell(5);
-        cell.Next.Next.Next = new BTreeCell(7);
-        cell.Next.Next.Next.Next = new BTreeCell(10);
-
-        var expectedMedian1 = cell.GetMedianNum(1, 5);
-        var expectedMedian2 = cell.GetMedianNum(8, 5);
-
-        Assert.Equal(3, expectedMedian1);
-        Assert.Equal(7, expectedMedian2);
-    }
-
     [Fact]
     public void InsertValueTest()
     {
@@ -30,16 +14,71 @@ public class BTreeCell_Tests
         cell = cell.InsertCell(7);
         cell = cell.InsertCell(1);
 
-        var expectedValue1 = cell.Value;
-        var expectedValue2 = cell.Next.Next.Value;
-        var expectedValue3 = cell.Next.Next.Next.Next.Value;
+        var actualValue = cell.Value;
+        var actualValue2 = cell.Next.Next.Value;
+        var actualValue3 = cell.Next.Next.Next.Next.Value;
 
         //var expectedCellCount = cell.GetCellCount();
         
-        Assert.Equal(1, expectedValue1);
-        Assert.Equal(5, expectedValue2);
-        Assert.Equal(7, expectedValue3);
+        Assert.Equal(1, actualValue);
+        Assert.Equal(5, actualValue2);
+        Assert.Equal(7, actualValue3);
         //Assert.Equal(5, expectedCellCount);
+    }
+
+    [Fact]
+    public void AddNewValue_ToCell_WithNoMaxCellCount() //
+    {
+        var BTree = new BTree(2);
+        
+        BTree.AddNewValue(10);
+        BTree.AddNewValue(13);
+        var expectedValue = BTree.Head.HeadOfList.Value;
+        var expectedValue2 = BTree.Head.HeadOfList.Next.Value;
+
+        Assert.Equal(10, expectedValue);
+        Assert.Equal(13, expectedValue2);
+    }
+    [Fact]
+    public void AddNewValue_ToFullNode_WithoutParentNodeNull() //fddfd
+    {
+        var BTree = new BTree(2);
+
+        BTree.AddNewValue(10);
+        BTree.AddNewValue(15);
+        BTree.AddNewValue(13);
+
+        var actualValue = BTree.Head.HeadOfList.Value;
+        var actualValue2 = BTree.Head.HeadOfList.Left.HeadOfList.Value;
+        var actualValue3 = BTree.Head.HeadOfList.Right.HeadOfList.Value;
+
+        var actualParentNode = BTree.Head.HeadOfList.Left.ParentNode;
+        var actualParentNode2 = BTree.Head.HeadOfList.Right.ParentNode;
+
+        var expectedParentNode = BTree.Head;
+
+        Assert.Equal(13, actualValue);
+        Assert.Equal(10, actualValue2);
+        Assert.Equal(15, actualValue3);
+
+        Assert.Equal(expectedParentNode, actualParentNode);
+        Assert.Equal(expectedParentNode, actualParentNode2);
+    }
+
+    [Fact]
+    public void AddNewValue_FullNodes_AndWithParentNodes()
+    {
+        var BTree = new BTree(2);
+
+        BTree.AddNewValue(50);
+        BTree.AddNewValue(60);
+        BTree.AddNewValue(70);
+        BTree.AddNewValue(80);
+        BTree.AddNewValue(90);
+        BTree.AddNewValue(100);
+        BTree.AddNewValue(110);
+
+        Assert.Equal(1, 1);
     }
 
 }

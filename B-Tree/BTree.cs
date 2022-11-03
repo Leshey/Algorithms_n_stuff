@@ -16,15 +16,17 @@ public class BTree
         _maxNumOfCells = maxNumOfCells;
     }
 
-    //public void AddNewValue(int newValue)
-    //{
-    //    if (_head == null)
-    //    {
-    //        _head = new BTreeNode(newValue, _maxNumOfCells);
-    //    }
-    //    else
-    //    {
-    //        _head = _head.AddNewValue(newValue);
-    //    }
-    //}
+    public BTreeNode Head { get { return _head; } private set { _head = value; } }
+
+    public void AddNewValue(int newValue)
+    {
+        if (_head == null)
+        {
+            _head = new BTreeNode(newValue, _maxNumOfCells);
+        }
+        else
+        {
+            _head = _head.AddNewValue(newValue);
+        }
+    }
 }
