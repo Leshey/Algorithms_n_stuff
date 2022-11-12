@@ -16,15 +16,9 @@
     public BTreeNode Right { get; private set; }
 
     
-    public BTreeCell AddNewValue(int newValue)
+    public BTreeCell AddNewValue(BTreeCell newCell)
     {
-        return this.InsertCell(newValue);
-    }
-    
-    public BTreeCell InsertCell(int newValue)
-    {
-        var cell = new BTreeCell(newValue);
-        return InsertCell(cell);
+        return this.InsertCell(newCell);
     }
 
     public BTreeCell InsertCell(BTreeCell newCell)
@@ -106,7 +100,7 @@
             var medianIndex = GetMedianIndex(newValue, maxNumOfCell);
             var medianCell = GetCellByIndex(medianIndex);
             medianCell.Left = node;
-            medianCell.Right = new BTreeNode(GetCellByIndex(medianIndex + 1), maxNumOfCell);
+            medianCell.Right = new BTreeNode(GetCellByIndex(medianIndex + 1), maxNumOfCell, node.ParentNode);
             RemoveOldLinksInMedianCell(medianIndex);
             
             return medianCell;
@@ -267,7 +261,7 @@
             {
                 return index;
             }
-            else if(cell.Next != null)
+            else if(currentCell.Next != null)
             {
                 currentCell = currentCell.Next;
                 index += 1;

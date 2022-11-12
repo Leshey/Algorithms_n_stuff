@@ -4,27 +4,27 @@ namespace B_Tree_Tests;
 
 public class BTree_Tests
 {
-    [Fact]
-    public void InsertValueTest()
-    {
-        var cell = new BTreeCell(3);
-        cell.Next = new BTreeCell(6);
+    //[Fact]
+    //public void InsertValueTest()
+    //{
+    //    var cell = new BTreeCell(3);
+    //    cell.Next = new BTreeCell(6);
 
-        cell = cell.InsertCell(5);
-        cell = cell.InsertCell(7);
-        cell = cell.InsertCell(1);
+    //    cell = cell.InsertCell(5);
+    //    cell = cell.InsertCell(7);
+    //    cell = cell.InsertCell(1);
 
-        var actualValue = cell.Value;
-        var actualValue2 = cell.Next.Next.Value;
-        var actualValue3 = cell.Next.Next.Next.Next.Value;
+    //    var actualValue = cell.Value;
+    //    var actualValue2 = cell.Next.Next.Value;
+    //    var actualValue3 = cell.Next.Next.Next.Next.Value;
 
-        //var expectedCellCount = cell.GetCellCount();
+    //    //var expectedCellCount = cell.GetCellCount();
         
-        Assert.Equal(1, actualValue);
-        Assert.Equal(5, actualValue2);
-        Assert.Equal(7, actualValue3);
-        //Assert.Equal(5, expectedCellCount);
-    }
+    //    Assert.Equal(1, actualValue);
+    //    Assert.Equal(5, actualValue2);
+    //    Assert.Equal(7, actualValue3);
+    //    //Assert.Equal(5, expectedCellCount);
+    //}
 
     [Fact]
     public void AddNewValue_ToCell_WithNoMaxCellCount() //

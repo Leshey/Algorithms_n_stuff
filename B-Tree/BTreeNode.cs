@@ -26,8 +26,13 @@ public class BTreeNode
     public int NumOfCells => HeadOfList.GetCellCount();
 
 
-
     public BTreeNode AddNewValue(int newValue)
+    {
+        var cell = new BTreeCell(newValue);
+        return AddNewValue(cell);
+    }
+
+    public BTreeNode AddNewValue(BTreeCell newCell)
     {
         var currentNode = this;
         var currentHeadNode = currentNode;
@@ -35,20 +40,20 @@ public class BTreeNode
 
         if (currentNode.HeadOfList.Left != null)
         {
-            currentNode = currentNode.GoToLowerNode(newValue);
+            currentNode = currentNode.GoToLowerNode(newCell.Value);
         }        
 
         while(true)
         {
             if (currentNode.NumOfCells < currentNode.MaxNumOfCells)
             {
-                currentNode.HeadOfList = currentNode.HeadOfList.AddNewValue(newValue);
+                currentNode.HeadOfList = currentNode.HeadOfList.AddNewValue(newCell);
                 return currentHeadNode;
             }
             else
             {
-                currentNode.HeadOfList = currentNode.HeadOfList.AddNewValue(newValue);
-                medianCell = currentNode.HeadOfList.GetMedianCell(currentNode, newValue, currentNode.MaxNumOfCells);
+                currentNode.HeadOfList = currentNode.HeadOfList.AddNewValue(newCell);
+                medianCell = currentNode.HeadOfList.GetMedianCell(currentNode, newCell.Value, currentNode.MaxNumOfCells);
 
                 if (currentNode.ParentNode == null)
                 {
@@ -59,7 +64,7 @@ public class BTreeNode
                 else
                 {
                     currentNode = currentNode.ParentNode;
-
+                    newCell = medianCell;
                     continue;
                 }
             }
