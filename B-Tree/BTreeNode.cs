@@ -37,6 +37,8 @@ public class BTreeNode
         var currentNode = this;
         var currentHeadNode = currentNode;
         BTreeCell medianCell;
+        BTreeCell oldMedianCell = null;
+
 
         if (currentNode.HeadOfList.Left != null)
         {
@@ -54,15 +56,36 @@ public class BTreeNode
             {
                 currentNode.HeadOfList = currentNode.HeadOfList.AddNewValue(newCell);
                 medianCell = currentNode.HeadOfList.GetMedianCell(currentNode, newCell.Value, currentNode.MaxNumOfCells);
+                
+                if (medianCell.Left != null && medianCell.Left.HeadOfList.Left != null)
+                {
+                    if(medianCell.Value > oldMedianCell.Value)
+                    {
+                        oldMedianCell.Left.ParentNode = medianCell.Left;
+                        oldMedianCell.Right.ParentNode = medianCell.Left;
+                    }
+                    else if(medianCell.Value < oldMedianCell.Value)
+                    {
+                        oldMedianCell.Left.ParentNode = medianCell.Right;
+                        oldMedianCell.Right.ParentNode = medianCell.Right;
+                    }
+                    else
+                    {
+                        oldMedianCell.Left.ParentNode = medianCell.Left;
+                        oldMedianCell.Right.ParentNode = medianCell.Right;
+                    }
+                }
 
                 if (currentNode.ParentNode == null)
                 {
                     currentNode.ParentNode = new BTreeNode(medianCell, currentNode.MaxNumOfCells);
-                    SetParentNode(medianCell.Right, currentNode.ParentNode);
+                    medianCell.Right.ParentNode = currentNode.ParentNode;
+
                     return currentNode.ParentNode;
                 }
                 else
                 {
+                    oldMedianCell = medianCell;
                     currentNode = currentNode.ParentNode;
                     newCell = medianCell;
                     continue;
@@ -117,8 +140,6 @@ public class BTreeNode
         }
     }
 
-
-
     public int GetHeight(BTreeCell head)
     {
         var currentHead = head;
@@ -133,11 +154,5 @@ public class BTreeNode
         {
             return height;
         }
-         // is there better way to write it?
-    }
-
-    private void SetParentNode(BTreeNode childNode, BTreeNode parentNode)
-    {
-        childNode.ParentNode = parentNode;
     }
 }

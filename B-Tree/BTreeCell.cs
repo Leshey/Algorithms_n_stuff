@@ -23,11 +23,15 @@
 
     public BTreeCell InsertCell(BTreeCell newCell)
     {
-        var currentCell = this;  //GetNodeToInsert(newValue); // pray it works (NEED TESTING!)
+        var currentCell = this;  
 
         if (newCell.Value < currentCell.Value)
         {
             newCell.Next = currentCell;
+            if (newCell.Left != null && newCell.Right != null)
+            {
+                ShareLinksWithNeighborCells(newCell);
+            }
             return newCell;
         }
         else
@@ -151,59 +155,6 @@
 
     }
 
-    [Obsolete("Legacy logic, remove asap")] // Obsolete - When call obsolete method, shows msg that this is bad idea 
-    public int GetMedianIndexButOld(int newValue, int maxNumOfCell) 
-    {
-        int[] numArray = new int[maxNumOfCell + 1]; //Do not forget to remove +1 if logic will change to (maxNumOfCell + 1) Cells in Node for easier median finding.
-        bool isNewValueInArray = false;
-        var currentHead = this;
-        
-
-        for (int i = 0; i < numArray.Length; i++)
-        {
-            var valueToArray = currentHead.Value;
-            if (newValue < valueToArray && isNewValueInArray == false)
-            {
-                numArray[i] = newValue;
-                i += 1;
-                numArray[i] = valueToArray;
-                isNewValueInArray = true;
-            }
-            else
-            {
-                numArray[i] = valueToArray;
-            }
-            currentHead = currentHead.Next;
-        }
-    
-        var oddOrEven = numArray.Length % 2;
-        if(oddOrEven == 0)
-        {
-            var medianIndex = (numArray.Length / 2) - 1;
-            return GetClosestMedian(medianIndex);
-        }
-        else
-        {
-            var medianIndex = (numArray.Length / 2) - 1;
-            return medianIndex + 1;
-        }
-        
-        //local method cuz why not
-        //looking for closest median to new value in node
-        int GetClosestMedian(int medianIndexArg)
-        {
-            var candidate1 = numArray[medianIndexArg];
-            var indexOfCandidate1 = medianIndexArg;
-            var candidate2 = numArray[medianIndexArg + 1];
-            var indexOfCandidate2 = medianIndexArg + 1;
-
-            candidate1 = candidate1 > newValue ? candidate1 - newValue : newValue - candidate1;
-            candidate2 = candidate2 > newValue ? candidate2 - newValue : newValue - candidate2;
-
-             return candidate1 < candidate2 ? indexOfCandidate1 : indexOfCandidate2;
-        }
-    }
-
     public void RemoveOldLinksInMedianCell(int medianIndex)
     {
         if(medianIndex > 0)
@@ -252,8 +203,17 @@
 
     public int GetCellIndex(BTreeCell cell)
     {
-        var currentCell = this;
+        BTreeCell currentCell;
         var index = 0;
+
+        if (cell.Next != null && cell.Next.Value == this.Value)
+        {
+            currentCell = cell;
+        }
+        else
+        {
+            currentCell = this;
+        }
 
         while (true)
         {
