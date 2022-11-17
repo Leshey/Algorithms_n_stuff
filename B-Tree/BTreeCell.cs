@@ -10,17 +10,25 @@
         Value = value;
     }
 
+    // делать костыли в коде ради тестов и потом убирать их плохо ибо тесты протухнут и ты делал бесполезную работу
     public BTreeCell? Next { get; set; } //removed private fot tests
+    // а вообще зачем тут сетор?
     public int Value { get; private set; }
-    public BTreeNode Left { get; private set; }
-    public BTreeNode Right { get; private set; }
+    /*
+     *Не хватает ?
+     */
+    public BTreeNode? Left { get; private set; }
+    public BTreeNode? Right { get; private set; }
 
-    
+    // слишком сложно название метода
     public BTreeCell AddNewValue(BTreeCell newCell)
     {
+        /*
+         * this устаревшая канатация для вызова методов/пропертей
+         */
         return this.InsertCell(newCell);
     }
-
+    // опастный публичный метод
     public BTreeCell InsertCell(BTreeCell newCell)
     {
         var currentCell = this;  
@@ -28,15 +36,21 @@
         if (newCell.Value < currentCell.Value)
         {
             newCell.Next = currentCell;
+            // инкапсулировать хак
             if (newCell.Left != null && newCell.Right != null)
             {
                 ShareLinksWithNeighborCells(newCell);
             }
             return newCell;
         }
+        // else не трубется
         else
         {
-            while(true)
+            /* вообще хрен знает надо ли на это душнить, но пожалуй надо начать
+             * while(true) - плоха
+             * для того что бы от него избавиться класс BTreeCell должен релизовать IEnumerable<int>
+             */
+            while (true)
             {
                 if (currentCell.Next != null)
                 {
@@ -47,27 +61,32 @@
                         newCell.Next = tempCell;
                         break;
                     }
+                    // else не нужен
                     else
                     {
                         currentCell = currentCell.Next;
+                        // этот continue имеет смысл только если у нас нет двух else
                         continue;
                     }                    
                 }
+                // else не нужен
                 else
                 {
                     currentCell.Next = newCell;
                     break;
                 }
             }
-
+            // это все больше походить на костыль
             if (newCell.Left != null && newCell.Right != null)
             {
                 ShareLinksWithNeighborCells(newCell);
             }
         }
+        
         return this; 
     }
 
+    // чет сложно похоже на костыль
     public void ShareLinksWithNeighborCells(BTreeCell newCell)
     {
         var newCellIndex = GetCellIndex(newCell);
@@ -97,9 +116,11 @@
 
     public BTreeCell GetMedianCell(BTreeNode node, int newValue, int maxNumOfCell)
     {
+        // засем она у тебя же ни как не изментся
         var currentHead = node.HeadOfList;
 
         if (currentHead.GetCellCount() >= maxNumOfCell + 1) //Maybe unnecessary guard, since it's Node responsibility but eeeh 
+                                                            // очень нужный гвард и еще не нулл возращать а кидать экспешне
         {
             var medianIndex = GetMedianIndex(newValue, maxNumOfCell);
             var medianCell = GetCellByIndex(medianIndex);
@@ -115,7 +136,7 @@
         }
 
     }
-
+    // такие методы это приватные
     public int GetMedianIndex(int newValue, int maxNumOfCell)
     {
         int[] numArray = new int[maxNumOfCell + 1];
@@ -155,6 +176,7 @@
 
     }
 
+    // это внутриния кухня и шарить такое на ружу очень опастно
     public void RemoveOldLinksInMedianCell(int medianIndex)
     {
         if(medianIndex > 0)
